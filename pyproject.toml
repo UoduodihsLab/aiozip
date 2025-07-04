@@ -23,8 +23,8 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Framework :: AsyncIO",
-    "Topic :: System :: Archiving :: Compression",
-    "Topic :: System :: Archiving :: Decompression",
+    "Topic :: System :: Archiving",
+    "Topic :: System :: Archiving :: Compression"
 ]
 dependencies = [
     "aiofiles>=23.0.0"

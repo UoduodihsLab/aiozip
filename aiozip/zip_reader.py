@@ -70,10 +70,14 @@ class AsyncZipExtractor:
         offset = 0
         for _ in range(self.eocd.num_entries_total):
             if offset >= len(cd_data) or not cd_data[offset:].startswith(CENTRAL_DIR_FILE_HEADER_SIGNATURE):
-                raise CorruptArchiveError("Central directory data is corrupt or malformed")
+                raise CorruptArchiveError("中央目录数据已损坏或格式错误")
 
+            # 文件头的固定部分长度为 42 字节
+            # 签名(4字节) + 字段(42字节) = 总共 46 字节
             header_data = cd_data[offset + 4:offset + 46]
-            header_parts = struct.unpack('<HHHHHIIIIIHHHHHII', header_data)
+
+            # 修正后的格式化字符串 (6个H, 3个I, 5个H, 2个I = 42字节)
+            header_parts = struct.unpack('<HHHHHHIIIHHHHHII', header_data)
 
             file_name_length = header_parts[9]
             extra_field_length = header_parts[10]
@@ -82,7 +86,7 @@ class AsyncZipExtractor:
             start = offset + 46
             file_name_bytes = cd_data[start: start + file_name_length]
             try:
-                # Try UTF-8 first, fallback to cp437 (IBM PC) which is common in older ZIPs
+                # 首先尝试 UTF-8, 如果失败则回退到 cp437 (旧ZIP文件常见编码)
                 file_name = file_name_bytes.decode('utf-8')
             except UnicodeDecodeError:
                 file_name = file_name_bytes.decode('cp437')

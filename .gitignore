@@ -121,3 +121,5 @@ dmypy.json
 .pytype/
 
 .idea/
+
+.DS_Store
