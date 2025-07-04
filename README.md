@@ -1,73 +1,95 @@
 # aiozip
 
-[![PyPI version](https://badge.fury.io/py/aiozip.svg)](https://badge.fury.io/py/aiozip)
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[](https://www.google.com/search?q=https://badge.fury.io/py/aiozip)
+[](https://choosealicense.com/licenses/mit/)
+[](https://www.google.com/search?q=https://pypi.org/project/aiozip)
 
-**aiozip** 是一个使用原生 `asyncio` 构建的 Python 库，用于高性能地异步处理归档文件。
+**aiozip** is a Python library for high-performance, asynchronous archive handling, built with native `asyncio`.
 
-当前阶段专注于提供一个简单、统一的 API 来解压各种常见的归档格式。
+The current phase focuses on providing a simple, unified API to decompress various common archive formats. Future versions will include compression capabilities.
 
-## ✨ 主要特性
+## ✨ Key Features
 
-* **原生异步**: 对 `.zip` 文件实现了从零开始的原生异步解压，无任何阻塞I/O。
-* **统一 API**: 一个简单的 `aiozip.uncompress()` 函数即可处理多种格式。
-* **多格式支持**: 目前支持 `.zip`, `.tar`, `.tar.gz`, `.tar.bz2`。
-* **轻量级**: 仅依赖 `aiofiles`，保持最小的依赖。
-* **现代 & 类型提示**: 使用现代 Python 特性 (Python 3.8+) 并提供完整的类型提示。
+  * **Truly Async**: Implements native asynchronous decompression for `.zip` files from the ground up, featuring non-blocking I/O throughout the process.
+  * **Unified API**: A single, simple `aiozip.uncompress()` function handles multiple formats intelligently.
+  * **Multi-Format Support**: Currently supports `.zip`, `.tar`, `.tar.gz`, and `.tar.bz2`.
+  * **Lightweight**: Minimal dependencies, relying only on `aiofiles` for async file operations.
+  * **Modern & Type-Hinted**: Built with modern Python 3.8+ features and includes full type hinting for better editor support and code quality.
 
-## 🚀 安装
+## 🚀 Installation
 
 ```bash
 pip install aiozip
 ```
 
-## 💡 快速开始
+## 💡 Quick Start
 
-使用 `aiozip` 非常简单。下面是一个解压 `.zip` 和 `.tar.gz` 文件的例子：
+Using `aiozip` is straightforward. Here is a basic example of how to uncompress a `.zip` file.
 
 ```python
 import asyncio
 import aiozip
 
 async def main():
+    source_archive = "my_archive.zip"
+    destination_dir = "./unzipped_files"
+
     try:
-        print("正在解压 zip 文件...")
-        # 假设你有一个 my_archive.zip 文件
-        await aiozip.uncompress("my_archive.zip", "./unzipped_files")
-        print("解压完成!")
+        print(f"Uncompressing '{source_archive}' to '{destination_dir}'...")
+        # Assuming you have a file named my_archive.zip
+        await aiozip.uncompress(source_archive, destination_dir)
+        print("Uncompression complete!")
 
     except aiozip.AiozipError as e:
-        print(f"发生了一个错误: {e}")
+        print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
+    # To run this example, create a dummy zip file first.
+    # On macOS/Linux: echo "hello" > file.txt && zip my_archive.zip file.txt
     asyncio.run(main())
 ```
 
-## API
+The same function works for other supported formats:
+
+```python
+# Uncompress a tarball
+await aiozip.uncompress("my_archive.tar.gz", "./unzipped_tar_files")
+```
+
+## API Reference
 
 ### `await aiozip.uncompress(source_path, dest_path)`
 
-异步解压一个归档文件。
+Asynchronously uncompresses an archive file to a destination directory.
 
-* **`source_path` (str)**: 源归档文件的路径。
-* **`dest_path` (str)**: 解压目标目录的路径。
+  * **`source_path` (str)**: Path to the source archive file.
+  * **`dest_path` (str)**: Path to the destination directory. It will be created if it doesn't exist.
 
-### 异常
+### Exceptions
 
-* `aiozip.ArchiveNotFoundError`: 源文件未找到。
-* `aiozip.UnsupportedFormatError`: 不支持的归档格式。
-* `aiozip.CorruptArchiveError`: 归档文件已损坏。
+The library raises specific exceptions, all inheriting from `aiozip.AiozipError`.
 
-## 未来计划
+  * `aiozip.ArchiveNotFoundError`: Raised if the `source_path` does not exist.
+  * `aiozip.UnsupportedFormatError`: Raised if the archive format is not supported.
+  * `aiozip.CorruptArchiveError`: Raised if the archive file is corrupt or malformed.
 
-* [ ] 实现原生异步的文件**压缩**功能。
-* [ ] 支持更多归档格式 (如 .7z, .rar)。
-* [ ] 支持对加密归档文件的处理。
+## 🛣️ Roadmap
 
-## 🤝 贡献
+  * [ ] Implement truly asynchronous file **compression** capabilities.
+  * [ ] Add support for more archive formats (e.g., `.7z`, subject to dependency availability).
+  * [ ] Add support for handling password-protected archives.
 
-欢迎任何形式的贡献！请随时提交 Pull Request 或创建 Issue。
+## 🤝 Contributing
 
-## 📄 许可证
+Contributions are welcome\! Feel free to submit a Pull Request or create an Issue for bugs, feature requests, or improvements.
 
-本项目使用 [MIT 许可证](LICENSE)。
+1.  Fork the repository.
+2.  Create a new branch (`git checkout -b feature/your-feature-name`).
+3.  Make your changes.
+4.  Commit your changes (`git commit -m 'Add some amazing feature'`).
+5.  Push to the branch (`git push origin feature/your-feature-name`).
+6.  Open a Pull Request.
+
+## 📄 License
+
+This project is licensed under the [MIT License](https://www.google.com/search?q=LICENSE).
